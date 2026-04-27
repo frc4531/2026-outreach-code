@@ -4,7 +4,7 @@ import ntcore
 import wpilib
 import commands2
 import wpimath
-from commands2 import WaitCommand, ParallelDeadlineGroup
+from commands2 import WaitCommand, InstantCommand, ParallelCommandGroup
 from commands2.cmd import waitSeconds
 
 from wpimath.controller import PIDController, ProfiledPIDControllerRadians, HolonomicDriveController
@@ -69,6 +69,13 @@ class RobotContainer:
             DriveCommand(self.drive_subsystem)
         )
 
+        self.turret_subsystem.setDefaultCommand(
+            ParallelCommandGroup(
+                InstantCommand(self.turret_subsystem.turret_pid_controller.setReference(self.turret_subsystem.get_turret_position())),
+                InstantCommand(self.turret_subsystem.hood_pid_controller.setReference(self.turret_subsystem.get_hood_position()))
+            )
+        )
+
         self.shooter_subsystem.setDefaultCommand(
             ShooterToVelocity(self.shooter_subsystem, 3000)
         )
@@ -94,6 +101,20 @@ class RobotContainer:
         # Shooter Off
         commands2.button.JoystickButton(self.operator_controller, 9).toggleOnTrue(
             ShooterOff(self.shooter_subsystem)
+        )
+
+        # -- HOOD AND TURRET MANUAL CONTROL BLOCK --
+        commands2.button.JoystickButton(self.operator_controller, 11).whileTrue(
+            TurretLeft(self.turret_subsystem)
+        )
+        commands2.button.JoystickButton(self.operator_controller, 12).whileTrue(
+            TurretRight(self.turret_subsystem)
+        )
+        commands2.button.JoystickButton(self.operator_controller, 13).whileTrue(
+            HoodUp(self.turret_subsystem)
+        )
+        commands2.button.JoystickButton(self.operator_controller, 14).whileTrue(
+            HoodDown(self.turret_subsystem)
         )
 
         # -- DRIVER CONTROL BLOCK --
