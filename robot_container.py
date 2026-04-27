@@ -1,6 +1,7 @@
 import math
 
 import ntcore
+import rev
 import wpilib
 import commands2
 import wpimath
@@ -69,13 +70,6 @@ class RobotContainer:
             DriveCommand(self.drive_subsystem)
         )
 
-        self.turret_subsystem.setDefaultCommand(
-            ParallelCommandGroup(
-                InstantCommand(self.turret_subsystem.turret_pid_controller.setReference(self.turret_subsystem.get_turret_position())),
-                InstantCommand(self.turret_subsystem.hood_pid_controller.setReference(self.turret_subsystem.get_hood_position()))
-            )
-        )
-
         self.shooter_subsystem.setDefaultCommand(
             ShooterToVelocity(self.shooter_subsystem, 3000)
         )
@@ -88,32 +82,32 @@ class RobotContainer:
         """
         # -- OPERATOR CONTROL BLOCK --
         # Intake In
-        commands2.button.JoystickButton(self.operator_controller, 1).whileTrue(
+        commands2.button.JoystickButton(self.operator_controller, 5).whileTrue(
             IntakeIn(self.intake_subsystem)
         )
         # Hopper Out
-        commands2.button.JoystickButton(self.operator_controller, 3).whileTrue(
+        commands2.button.JoystickButton(self.operator_controller, 6).whileTrue(
             HopperOut(self.hopper_subsystem)
         )
-        commands2.button.JoystickButton(self.operator_controller, 3).whileTrue(
+        commands2.button.JoystickButton(self.operator_controller, 6).whileTrue(
             IntakeFeeder(self.intake_subsystem)
         )
         # Shooter Off
-        commands2.button.JoystickButton(self.operator_controller, 9).toggleOnTrue(
+        commands2.button.JoystickButton(self.operator_controller, 7).toggleOnTrue(
             ShooterOff(self.shooter_subsystem)
         )
 
         # -- HOOD AND TURRET MANUAL CONTROL BLOCK --
-        commands2.button.JoystickButton(self.operator_controller, 11).whileTrue(
+        commands2.button.JoystickButton(self.operator_controller, 3).whileTrue(
             TurretLeft(self.turret_subsystem)
         )
-        commands2.button.JoystickButton(self.operator_controller, 12).whileTrue(
+        commands2.button.JoystickButton(self.operator_controller, 2).whileTrue(
             TurretRight(self.turret_subsystem)
         )
-        commands2.button.JoystickButton(self.operator_controller, 13).whileTrue(
+        commands2.button.JoystickButton(self.operator_controller, 4).whileTrue(
             HoodUp(self.turret_subsystem)
         )
-        commands2.button.JoystickButton(self.operator_controller, 14).whileTrue(
+        commands2.button.JoystickButton(self.operator_controller, 1).whileTrue(
             HoodDown(self.turret_subsystem)
         )
 

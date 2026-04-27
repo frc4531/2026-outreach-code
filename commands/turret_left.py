@@ -12,7 +12,7 @@ class TurretLeft(commands2.Command):
         self.addRequirements(self.turret_sub)
 
     def execute(self) -> None:
-        self.turret_sub.set_turret_speed(0.1)
+        self.turret_sub.set_turret_speed(-0.25)
 
     def isFinished(self) -> bool:
         return False

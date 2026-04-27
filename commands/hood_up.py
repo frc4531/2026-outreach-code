@@ -12,7 +12,7 @@ class HoodUp(commands2.Command):
         self.addRequirements(self.turret_sub)
 
     def execute(self) -> None:
-        self.turret_sub.set_hood_speed(0.1)
+        self.turret_sub.set_hood_speed(-0.1)
 
     def isFinished(self) -> bool:
         return False
